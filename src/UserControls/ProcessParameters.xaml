@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="TFSManager.UserControls.ProcessParameters"
+﻿<UserControl x:Class="TfsBuilder.UserControls.ProcessParameters"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="500">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="500"
+             d:DesignWidth="500">
     <Grid>
         <StackPanel>
             <Grid>
@@ -18,22 +19,43 @@
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition Width="299"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="ProjectsToBuild" Grid.Row="0" Grid.Column="0"></TextBlock>
-                <ListView ItemsSource="{Binding ProjectsToBuild}" Grid.Row="0" Grid.Column="1">
+                <TextBlock Text="ProjectsToBuild"
+                           Grid.Row="0"
+                           Grid.Column="0"></TextBlock>
+                <ListView ItemsSource="{Binding ProjectsToBuild}"
+                          Grid.Row="0"
+                          Grid.Column="1">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}"></TextBlock>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Text="PlatformConfigurations" Grid.Row="1" Grid.Column="0"></TextBlock>
-                <DataGrid ItemsSource="{Binding PlatformConfigurations}" Grid.Row="1" Grid.Column="1">
+                <TextBlock Text="PlatformConfigurations"
+                           Grid.Row="1"
+                           Grid.Column="0"></TextBlock>
+                <ListView ItemsSource="{Binding PlatformConfigurations}"
+                          Grid.Row="1"
+                          Grid.Column="1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock Text="Process Parameters"
+                           Grid.Row="2"
+                           Grid.Column="0"></TextBlock>
+                <DataGrid ItemsSource="{Binding ProcParameters}"
+                          Grid.Row="2"
+                          Grid.Column="1">
                 </DataGrid>
-                <TextBlock Text="Process Parameters" Grid.Row="2" Grid.Column="0"></TextBlock>
-                <DataGrid ItemsSource="{Binding ProcParameters}" Grid.Row="2" Grid.Column="1">
-                </DataGrid>
-                <TextBlock Text="TestSpecList" Grid.Row="3" Grid.Column="0"></TextBlock>
-                <DataGrid ItemsSource="{Binding TestSpecList}" Grid.Row="3" Grid.Column="1">
+                <TextBlock Text="TestSpecList"
+                           Grid.Row="3"
+                           Grid.Column="0"></TextBlock>
+                <DataGrid ItemsSource="{Binding TestSpecList}"
+                          Grid.Row="3"
+                          Grid.Column="1">
                 </DataGrid>
             </Grid>
         </StackPanel>

@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TFSManager")]
+[assembly: AssemblyTitle("TfsBuilder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The University of Toledo")]
-[assembly: AssemblyProduct("TFSManager")]
+[assembly: AssemblyProduct("TfsBuilder")]
 [assembly: AssemblyCopyright("Copyright © The University of Toledo 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace TFSManager.Converters
+namespace TfsBuilder.Converters
 {
     public sealed class EnumToStringConverter : IValueConverter
     {

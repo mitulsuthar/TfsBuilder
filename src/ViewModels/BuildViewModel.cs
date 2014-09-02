@@ -11,15 +11,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-using TFSManager.Lib;
-namespace TFSManager.ViewModels
+using TfsBuilder.ViewModels;
+using TfsBuilder.Lib;
+namespace TfsBuilder.ViewModels
 {
     public class BuildViewModel : ViewModelBase
     {
-        public TfsTeamProjectCollection tpc;
-        public IBuildServer buildserver;
-        public BuildViewModel()
+        public TfsTeamProjectCollection _tpc;
+        public IBuildServer _buildserver;
+        private ITfsRepository _tfsRepository;
+        public BuildViewModel(ITfsRepository tfsRepository)
         {
+            _tfsRepository = tfsRepository;
             //var tfscollectionuri = new Uri(ConfigurationManager.AppSettings["tpcUri"].ToString(CultureInfo.CurrentCulture));
             //tpc = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(tfscollectionuri);
             //buildserver = tpc.GetService<IBuildServer>();
@@ -47,7 +50,7 @@ namespace TFSManager.ViewModels
         }
         public void GetTfsServerList()
         {
-            List<string> serverList = Core.GetTfsServerList();
+            List<string> serverList = _tfsRepository.GetTfsServerList();
             var slist = new ObservableCollection<string>();
             foreach (var server in serverList)
             {
@@ -91,7 +94,7 @@ namespace TFSManager.ViewModels
         public void GetTfsTeamProjectCollection()
         {
             Uri uri = new Uri(selectedTfsServer);
-            var collectionList = Core.GetTeamProjectCollections(uri);
+            var collectionList = _tfsRepository.GetTeamProjectCollections(uri);
             var tfscollist = new ObservableCollection<TeamProjectCollection>();
             foreach (var col in collectionList)
             {
@@ -111,8 +114,8 @@ namespace TFSManager.ViewModels
                     selectedTeamProjectCollection = value;
                     OnPropertyChanged("SelectedTeamProjectCollection");
                     Uri uri = new Uri(SelectedTfsServer);
-                    tpc = Core.GetTfsTeamProjectCollection(selectedTeamProjectCollection.Id, uri);
-                    buildserver = tpc.GetService<IBuildServer>();
+                    _tpc = _tfsRepository.GetTfsTeamProjectCollection(selectedTeamProjectCollection.Id, uri);
+                    _buildserver = _tpc.GetService<IBuildServer>();
                     this.GetProjects();
                 }
             }
@@ -143,7 +146,7 @@ namespace TFSManager.ViewModels
                 projectlist = new ObservableCollection<ProjectViewModel>();
             projectlist.Clear();
             var pl = new ObservableCollection<ProjectViewModel>();
-            var wiStore = tpc.GetService<WorkItemStore>();
+            var wiStore = _tpc.GetService<WorkItemStore>();
             foreach (Project project in wiStore.Projects)
             {
                 ProjectViewModel item = new ProjectViewModel(project);
@@ -199,7 +202,7 @@ namespace TFSManager.ViewModels
                 builddefinitionlist = new ObservableCollection<BuildDefinitionViewModel>();
             else
                 builddefinitionlist.Clear();
-            IBuildDefinition[] builddefinitions = buildserver.QueryBuildDefinitions(this.SelectedProject.Name);
+            IBuildDefinition[] builddefinitions = _buildserver.QueryBuildDefinitions(this.SelectedProject.Name);
 
             var bd = new ObservableCollection<BuildDefinitionViewModel>();
             foreach (IBuildDefinition item in builddefinitions)
@@ -276,7 +279,7 @@ namespace TFSManager.ViewModels
                 builddetaillist = new ObservableCollection<BuildDetailViewModel>();
             }
             builddetaillist.Clear();
-            IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(this.SelectedProject.Name, this.SelectedBuildDefinition.Name);
+            IBuildDetailSpec buildDetailSpec = _buildserver.CreateBuildDetailSpec(this.SelectedProject.Name, this.SelectedBuildDefinition.Name);
             buildDetailSpec.MaxBuildsPerDefinition = 10;
             buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
 
@@ -292,7 +295,7 @@ namespace TFSManager.ViewModels
         public IBuildDetail[] getBuilds(IBuildDetailSpec mybuildspec)
         {
 
-            var results = buildserver.QueryBuilds(mybuildspec).Builds;
+            var results = _buildserver.QueryBuilds(mybuildspec).Builds;
             return results;
         }
         private BuildDetailViewModel selectedbuilddetail;
@@ -375,5 +378,6 @@ namespace TFSManager.ViewModels
 
 
         #endregion
+
     }
 }

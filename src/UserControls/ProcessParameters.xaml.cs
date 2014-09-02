@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TFSManager.UserControls
+namespace TfsBuilder.UserControls
 {
     /// <summary>
     /// Interaction logic for ProcessParameters.xaml

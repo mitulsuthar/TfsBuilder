@@ -1,17 +1,17 @@
-﻿<Window x:Class="TFSManager.MainWindow"
+﻿<Window x:Class="TfsBuilder.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:TFSManager"
-        xmlns:vm="clr-namespace:TFSManager.ViewModels"
-        xmlns:cnv="clr-namespace:TFSManager.Converters"
-        xmlns:uc="clr-namespace:TFSManager.UserControls"
+        xmlns:local="clr-namespace:TfsBuilder"
+        xmlns:vm="clr-namespace:TfsBuilder.ViewModels"
+        xmlns:cnv="clr-namespace:TfsBuilder.Converters"
+        xmlns:uc="clr-namespace:TfsBuilder.UserControls"
         Title="TFS Manager"
         Height="800"
         Width="800"
         Loaded="Window_Loaded"
         WindowState="Maximized">
     <Window.Resources>
-        <vm:BuildViewModel x:Key="buildvm" />
+        <!--<vm:BuildViewModel x:Key="buildvm" />-->
         <cnv:EnumToStringConverter x:Key="etsconverter" />
         <Style x:Key="CustomerDefinition"
                TargetType="TextBlock">
@@ -25,7 +25,8 @@
     </Window.Resources>
 
     <ScrollViewer>
-        <StackPanel  DataContext="{Binding Source={StaticResource ResourceKey=buildvm}}">
+        <!--<StackPanel  DataContext="{Binding Source={StaticResource ResourceKey=buildvm}}">-->
+            <StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>

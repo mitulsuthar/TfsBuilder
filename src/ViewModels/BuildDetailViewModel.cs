@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFSManager.ViewModels
+namespace TfsBuilder.ViewModels
 {
     public class BuildDetailViewModel : ViewModelBase
     {

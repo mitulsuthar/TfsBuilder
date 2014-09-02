@@ -12,15 +12,24 @@ using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using System.IO;
 using System.Threading.Tasks;
 using System.Configuration;
-namespace TFSManager
+using TfsBuilder.ViewModels;
+using Microsoft.Practices.Prism.Mvvm;
+namespace TfsBuilder
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IView//, IMainWindow
     {
-        public MainWindow()
+        private BuildViewModel _buildViewModel;
+        public MainWindow(BuildViewModel buildViewModel)
         {
+            if (buildViewModel == null)
+            {
+                throw new ArgumentNullException("buildViewModel");
+            }
+            _buildViewModel = buildViewModel;
+            this.DataContext = _buildViewModel;
             InitializeComponent();
         }
         public TfsTeamProjectCollection tpc;
@@ -32,13 +41,13 @@ namespace TFSManager
             try
             {
                 //Initialize tpc and build server in window loaded
-                tpc = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(ConfigurationManager.AppSettings["tpcUri"].ToString(CultureInfo.CurrentCulture)));
-                buildserver = tpc.GetService<IBuildServer>();         
-                var wiStore = tpc.GetService<WorkItemStore>();
-                foreach (Project project in wiStore.Projects)
-                {
+               // tpc = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(ConfigurationManager.AppSettings["tpcUri"].ToString(CultureInfo.CurrentCulture)));
+               // buildserver = tpc.GetService<IBuildServer>();         
+               // var wiStore = tpc.GetService<WorkItemStore>();
+             //   foreach (Project project in wiStore.Projects)
+             //   {
                    // comboBox_TeamProjects.Items.Add(project.Name);
-                }
+             //   }
                 //IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec("ProcessMonitor", "DebugProcMon");
                 //buildDetailSpec.MaxBuildsPerDefinition = 1;
                 //buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
@@ -83,73 +92,74 @@ namespace TFSManager
         //Do Something After Build Definition is Selected.
         private async void listbox_builddefinitions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                if (listbox_builddefinitions.SelectedIndex != -1)
-                {
-                    var xs = listbox_builddefinitions.SelectedItem.ToString();
-                    IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
+            //try
+            //{
+            //    if (listbox_builddefinitions.SelectedIndex != -1)
+            //    {
+            //        var xs = listbox_builddefinitions.SelectedItem.ToString();
+            //        IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
 
-                    IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
+            //        IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
                     
-                    IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
-                    buildDetailSpec.MaxBuildsPerDefinition = 1;
-                    buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
+            //        IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
+            //        buildDetailSpec.MaxBuildsPerDefinition = 1;
+            //        buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
 
-                    IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
+            //        IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
 
-                    //buildserver.QueryBuilds(buildDefinitions.Single(x => x.Name == listbox_builddefinitions.SelectedItem.ToString()));
-                    if (results.Failures.Length == 0 && results.Builds.Length == 1)
-                    {
-                        IBuildDetail buildDetail = results.Builds[0];
+            //        //buildserver.QueryBuilds(buildDefinitions.Single(x => x.Name == listbox_builddefinitions.SelectedItem.ToString()));
+            //        if (results.Failures.Length == 0 && results.Builds.Length == 1)
+            //        {
+            //            IBuildDetail buildDetail = results.Builds[0];
                         
-                        IBuildDefinition buildDefinition = buildDetail.BuildDefinition;
+            //            IBuildDefinition buildDefinition = buildDetail.BuildDefinition;
                         
-                        ct_builddefintionname.Content = buildDefinition.Name;
-                        ct_builddropfolder.Content = buildDetail.DropLocation;
-                        //ct_builddropfolder.Content = buildDefinition.DefaultDropLocation;
-                        ct_processtemplate.Content = buildDefinition.Process.ServerPath.ToString();
-                        var process = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
-                        //textBox_MSBuildArguments.Text = process["MSBuildArguments"].ToString();
-                        //lbl_UserName.Text = process["Username"].ToString();
-                        //var pquery = from p in process.ToList()
-                        //             select new { p.Key, p.Value };
+            //            ct_builddefintionname.Content = buildDefinition.Name;
+            //            ct_builddropfolder.Content = buildDetail.DropLocation;
+            //            //ct_builddropfolder.Content = buildDefinition.DefaultDropLocation;
+            //            ct_processtemplate.Content = buildDefinition.Process.ServerPath.ToString();
+            //            var process = WorkflowHelpers.DeserializeProcessParameters(buildDefinition.ProcessParameters);
+            //            //textBox_MSBuildArguments.Text = process["MSBuildArguments"].ToString();
+            //            //lbl_UserName.Text = process["Username"].ToString();
+            //            //var pquery = from p in process.ToList()
+            //            //             select new { p.Key, p.Value };
 
-                        //Show Build History for that particular Build Definition
-                        buildDetailSpec.MaxBuildsPerDefinition = 10;
-                        //listview_BuildDefinitionDetails.Items.Clear();
-                        //var allprops = from prop in buildDetail.GetType().GetProperties()
-                        //               select new ListBoxItem { Name = prop.Name, Content = prop.GetValue(buildDetail, null) };
+            //            //Show Build History for that particular Build Definition
+            //            buildDetailSpec.MaxBuildsPerDefinition = 10;
+            //            //listview_BuildDefinitionDetails.Items.Clear();
+            //            //var allprops = from prop in buildDetail.GetType().GetProperties()
+            //            //               select new ListBoxItem { Name = prop.Name, Content = prop.GetValue(buildDetail, null) };
 
-                        //foreach (var prop in allprops)
-                        //{
-                        //    listview_BuildDefinitionDetails.Items.Add(prop);
-                        //}
+            //            //foreach (var prop in allprops)
+            //            //{
+            //            //    listview_BuildDefinitionDetails.Items.Add(prop);
+            //            //}
 
-                        Task<IBuildDetail[]> getAllBuildsTask = getBuildsAsync(buildDetailSpec);
+            //            Task<IBuildDetail[]> getAllBuildsTask = getBuildsAsync(buildDetailSpec);
 
-                       IBuildDetail[] builds = await getAllBuildsTask;
+            //           IBuildDetail[] builds = await getAllBuildsTask;
                         
-                        dtgrid_viewbuildqueue.ItemsSource = (from build in builds
-                                                                 select new
-                                                                 {
-                                                                     build.BuildNumber,
-                                                                     build.Quality,
-                                                                     build.Status
-                                                                 });
-                        //listview_viewbuilddetail.Items.Clear();
-                    }
-                }
-            }
-            catch (TargetInvocationException)
-            {
+            //            dtgrid_viewbuildqueue.ItemsSource = (from build in builds
+            //                                                     select new
+            //                                                     {
+            //                                                         build.BuildNumber,
+            //                                                         build.Quality,
+            //                                                         build.Status
+            //                                                     });
+            //            //listview_viewbuilddetail.Items.Clear();
+            //        }
+            //    }
+            //}
+            //catch (TargetInvocationException)
+            //{
 
-            }
-            catch (NotImplementedException)
-            {
+            //}
+            //catch (NotImplementedException)
+            //{
 
-            }
+            //}
         }
+       
         public Task<IBuildDetail[]> getBuildsAsync(IBuildDetailSpec mybuildspec)
         {
             Task<IBuildDetail[]> task1 = Task<IBuildDetail[]>.Factory.StartNew(() =>
@@ -178,7 +188,7 @@ namespace TFSManager
                 IBuildDefinition buildDefinition = buildDetail.BuildDefinition;                
                 IBuildRequest bdrequest;
                 bdrequest = buildDefinition.CreateBuildRequest();
-               // buildserver.QueueBuild(bdrequest);
+                buildserver.QueueBuild(bdrequest);
                 view_buildqueue();
             }
             

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-namespace TFSManager.ViewModels
+namespace TfsBuilder.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
