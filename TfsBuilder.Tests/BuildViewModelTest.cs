@@ -6,13 +6,14 @@ using FakeItEasy;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TfsBuilder.Lib;
+using Microsoft.TeamFoundation.Framework.Client;
 namespace TfsBuilder.Tests
 {
     [TestClass]
     public class BuildViewModelTest
     {
         [TestMethod]
-        public void BuildViewModel_ShouldBeAbleToGetTfsServerList()
+        public void TfsServerList_OnCount_ReturnsTwoUris()
         {
             //Arrange             
             var fakeRepo = A.Fake<ITfsRepository>();            
@@ -24,8 +25,7 @@ namespace TfsBuilder.Tests
             var fakeBuildViewModel = new BuildViewModel(fakeRepo);
 
             Assert.IsTrue(fakeBuildViewModel.TfsServerList.Count > 0);            
-        }
-
-
+        }       
     }
+    
 }

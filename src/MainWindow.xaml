@@ -5,11 +5,14 @@
         xmlns:vm="clr-namespace:TfsBuilder.ViewModels"
         xmlns:cnv="clr-namespace:TfsBuilder.Converters"
         xmlns:uc="clr-namespace:TfsBuilder.UserControls"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         Title="TFS Manager"
         Height="800"
         Width="800"
         Loaded="Window_Loaded"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        mc:Ignorable="d">
     <Window.Resources>
         <!--<vm:BuildViewModel x:Key="buildvm" />-->
         <cnv:EnumToStringConverter x:Key="etsconverter" />
@@ -26,7 +29,7 @@
 
     <ScrollViewer>
         <!--<StackPanel  DataContext="{Binding Source={StaticResource ResourceKey=buildvm}}">-->
-            <StackPanel>
+        <StackPanel d:DataContext="{d:DesignInstance vm:BuildViewModel, IsDesignTimeCreatable=True}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -52,6 +55,7 @@
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
@@ -120,6 +124,20 @@
                                          SelectedItem="{Binding Path=SelectedBuildDefinition, Mode=TwoWay}"
                                          IsSynchronizedWithCurrentItem="True">
                                 </ListBox>
+                                <Label Grid.Row="4"
+                                       Grid.Column="1"
+                                       Name="ct_builddefintionname"
+                                       Content="{Binding Path=Name}"></Label>
+                                <Button Grid.Row="4"
+                                        Grid.Column="1"
+                                        Name="btn_QueueNewBuild"
+                                        Content="Queue"
+                                        Padding="5,5,5,5"
+                                        FontWeight="Bold"
+                                        BorderThickness="0"
+                                        ClipToBounds="False"
+                                        UseLayoutRounding="True"
+                                        Command="{Binding Path=QueueBuildCommand}"></Button>
                             </Grid>
                             <!---Shows you information about the SelectedBuildDefinition-->
                             <StackPanel   DataContext="{Binding Path=SelectedBuildDefinition}">
@@ -140,20 +158,7 @@
                                            Width="200"
                                            Name="lbl_builddefintionname"
                                            Content="Build Definition :"></Label>
-                                    <Label Grid.Row="0"
-                                           Grid.Column="1"
-                                           Name="ct_builddefintionname"
-                                           Content="{Binding Path=Name}"></Label>
-                                    <Button Grid.Row="1"
-                                            Grid.Column="1"
-                                            Name="btn_QueueNewBuild"
-                                            Content="Queue"
-                                            Padding="5,5,5,5"
-                                            FontWeight="Bold"
-                                            BorderThickness="0"
-                                            ClipToBounds="False"
-                                            UseLayoutRounding="True"
-                                            Click="btn_QueueNewBuild_Click"></Button>
+                                   
                                     <Label Grid.Row="2"
                                            Grid.Column="0"
                                            Width="200"

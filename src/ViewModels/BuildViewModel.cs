@@ -13,20 +13,36 @@ using System.Threading.Tasks;
 using System.Configuration;
 using TfsBuilder.ViewModels;
 using TfsBuilder.Lib;
+using Microsoft.Practices.Prism.Commands;
+using System.Windows.Input;
 namespace TfsBuilder.ViewModels
 {
     public class BuildViewModel : ViewModelBase
     {
         public TfsTeamProjectCollection _tpc;
-        public IBuildServer _buildserver;
+        public IBuildServer _buildserver { get; private set; }
         private ITfsRepository _tfsRepository;
+
+        public BuildViewModel()
+        {
+
+        }
+ 
         public BuildViewModel(ITfsRepository tfsRepository)
         {
             _tfsRepository = tfsRepository;
-            //var tfscollectionuri = new Uri(ConfigurationManager.AppSettings["tpcUri"].ToString(CultureInfo.CurrentCulture));
-            //tpc = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(tfscollectionuri);
-            //buildserver = tpc.GetService<IBuildServer>();
-            //var tpcService = tpc.GetService<ITeamProjectCollectionService>();
+            this.QueueBuildCommand = new DelegateCommand(QueueBuild);
+            this.QueueBuildCommand.RaiseCanExecuteChanged();
+            this.OnPropertyChanged("QueueBuildCommand");
+        }
+        public DelegateCommand QueueBuildCommand { get; private set; }       
+       
+        public void QueueBuild()
+        {
+            IBuildDefinition buildDefinition = SelectedBuildDefinition.BuildDefinition;
+            IBuildRequest bdrequest;
+            bdrequest = buildDefinition.CreateBuildRequest();
+            _buildserver.QueueBuild(bdrequest);                
             
         }
         #region TfsServers
@@ -115,7 +131,7 @@ namespace TfsBuilder.ViewModels
                     OnPropertyChanged("SelectedTeamProjectCollection");
                     Uri uri = new Uri(SelectedTfsServer);
                     _tpc = _tfsRepository.GetTfsTeamProjectCollection(selectedTeamProjectCollection.Id, uri);
-                    _buildserver = _tpc.GetService<IBuildServer>();
+                    _buildserver = _tpc.GetService<IBuildServer>();                    
                     this.GetProjects();
                 }
             }
@@ -172,10 +188,7 @@ namespace TfsBuilder.ViewModels
                 }
             }
         }
-        #endregion
-        #region BuildServer
-
-        #endregion
+        #endregion        
         #region BuilDefinitions
         private ObservableCollection<BuildDefinitionViewModel> builddefinitionlist = null;
 
@@ -229,6 +242,7 @@ namespace TfsBuilder.ViewModels
                     OnPropertyChanged("SelectedBuildDefinition");
                     this.GetBuildDetails();
                     this.BuildProcessParameters = new ProcessParametersViewModel(selectedbuilddefinition.ProcessParameters);
+                    this.QueueBuildCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -378,6 +392,8 @@ namespace TfsBuilder.ViewModels
 
 
         #endregion
+
+
 
     }
 }

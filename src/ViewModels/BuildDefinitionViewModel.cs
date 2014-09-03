@@ -10,6 +10,7 @@ namespace TfsBuilder.ViewModels
     public class BuildDefinitionViewModel : ViewModelBase
     {
         private BuildDefinitionViewModel originalvalue;
+        public IBuildDefinition BuildDefinition { get; private set; }
         internal BuildDefinitionViewModel(IBuildDefinition bd)
         {   
             ProcessTemplate = bd.Process.ServerPath;
@@ -22,6 +23,7 @@ namespace TfsBuilder.ViewModels
             Id = bd.Id;
             Name = bd.Name;
             ProcessParameters = bd.ProcessParameters;
+            BuildDefinition = bd;
             this.originalvalue = (BuildDefinitionViewModel)this.MemberwiseClone();
         }
         private string processtemplate;

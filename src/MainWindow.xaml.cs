@@ -187,7 +187,7 @@ namespace TfsBuilder
                 IBuildDetail buildDetail = results.Builds[0];
                 IBuildDefinition buildDefinition = buildDetail.BuildDefinition;                
                 IBuildRequest bdrequest;
-                bdrequest = buildDefinition.CreateBuildRequest();
+                bdrequest = buildDefinition.CreateBuildRequest();                
                 buildserver.QueueBuild(bdrequest);
                 view_buildqueue();
             }
