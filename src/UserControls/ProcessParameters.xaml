@@ -6,6 +6,13 @@
              mc:Ignorable="d"
              d:DesignHeight="500"
              d:DesignWidth="500">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <StackPanel>
             <Grid>
@@ -19,9 +26,10 @@
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition Width="299"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="ProjectsToBuild"
+                <Label Content="ProjectsToBuild"
                            Grid.Row="0"
-                           Grid.Column="0"></TextBlock>
+                           Grid.Column="0"
+                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                 <ListView ItemsSource="{Binding ProjectsToBuild}"
                           Grid.Row="0"
                           Grid.Column="1">
@@ -31,9 +39,10 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Text="PlatformConfigurations"
+                <Label Content="PlatformConfigurations"
                            Grid.Row="1"
-                           Grid.Column="0"></TextBlock>
+                           Grid.Column="0"
+                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                 <ListView ItemsSource="{Binding PlatformConfigurations}"
                           Grid.Row="1"
                           Grid.Column="1">
@@ -43,16 +52,18 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock Text="Process Parameters"
+                <Label Content="Process Parameters"
                            Grid.Row="2"
-                           Grid.Column="0"></TextBlock>
+                           Grid.Column="0"
+                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                 <DataGrid ItemsSource="{Binding ProcParameters}"
                           Grid.Row="2"
                           Grid.Column="1">
                 </DataGrid>
-                <TextBlock Text="TestSpecList"
+                <Label Content="TestSpecList"
                            Grid.Row="3"
-                           Grid.Column="0"></TextBlock>
+                           Grid.Column="0"
+                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>                           
                 <DataGrid ItemsSource="{Binding TestSpecList}"
                           Grid.Row="3"
                           Grid.Column="1">

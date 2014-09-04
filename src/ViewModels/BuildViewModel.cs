@@ -363,7 +363,7 @@ namespace TfsBuilder.ViewModels
                 DeployedFilesList = fileList;
             }
         }
-        string[] fileExtensions = { ".exe", ".zip" };
+        string[] fileExtensions = { ".exe", ".zip",".cmd"};
         internal ObservableCollection<FileViewModel> fileList = new ObservableCollection<FileViewModel>();
         public void DirSearch(string sDir)
         {

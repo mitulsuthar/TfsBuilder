@@ -9,22 +9,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         Title="TFS Manager"
         Height="800"
-        Width="800"
+        Width="1000"
         Loaded="Window_Loaded"
         WindowState="Maximized"
         mc:Ignorable="d">
     <Window.Resources>
         <!--<vm:BuildViewModel x:Key="buildvm" />-->
-        <cnv:EnumToStringConverter x:Key="etsconverter" />
-        <Style x:Key="CustomerDefinition"
-               TargetType="TextBlock">
-            <Setter Property="Control.FontFamily"
-                    Value="Tahoma" />
-            <Setter Property="Control.FontSize"
-                    Value="12" />
-            <Setter Property="Control.Foreground"
-                    Value="Red" />
-        </Style>
+        <ResourceDictionary>
+            <cnv:EnumToStringConverter x:Key="etsconverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <ScrollViewer>
@@ -47,11 +43,7 @@
                             Height="Auto"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top">
-                    <Border Background="LightBlue"
-                            BorderBrush="Black"
-                            BorderThickness="2"
-                            CornerRadius="10"
-                            Padding="25">
+                    <Border Style="{StaticResource DefaultBorderStyle}">
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -70,7 +62,8 @@
                                        Grid.Column="0"
                                        Width="200"
                                        Name="lbl_teamserver"
-                                       Content="Tfs Server(s) :"></Label>
+                                       Content="Tfs Server(s) :"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 <ComboBox Grid.Row="0"
                                           Grid.Column="1"
                                           Width="299"
@@ -82,7 +75,8 @@
                                        Grid.Column="0"
                                        Width="200"
                                        Name="lbl_teamprojectcollection"
-                                       Content="Team Project Collection :"></Label>
+                                       Content="Team Project Collection :"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 <ComboBox Grid.Row="1"
                                           Grid.Column="1"
                                           Width="299"
@@ -96,7 +90,8 @@
                                        Grid.Column="0"
                                        Width="200"
                                        Name="lbl_teamprojects"
-                                       Content="Team Project :"></Label>
+                                       Content="Team Project :"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 <ComboBox Grid.Row="2"
                                           Grid.Column="1"
                                           Width="299"
@@ -111,7 +106,8 @@
                                        Grid.Column="0"
                                        Width="200"
                                        Name="lbl_builddefintions"
-                                       Content="Build Definitions :"></Label>
+                                       Content="Build Definitions :"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 <ListBox Grid.Row="3"
                                          Grid.Column="1"
                                          Width="299"
@@ -127,14 +123,13 @@
                                 <Label Grid.Row="4"
                                        Grid.Column="1"
                                        Name="ct_builddefintionname"
-                                       Content="{Binding Path=Name}"></Label>
+                                       Content="{Binding Path=Name}"
+                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 <Button Grid.Row="4"
-                                        Grid.Column="1"
+                                        Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"
                                         Name="btn_QueueNewBuild"
                                         Content="Queue"
                                         Padding="5,5,5,5"
-                                        FontWeight="Bold"
-                                        BorderThickness="0"
                                         ClipToBounds="False"
                                         UseLayoutRounding="True"
                                         Command="{Binding Path=QueueBuildCommand}"></Button>
@@ -157,23 +152,26 @@
                                            Grid.Column="0"
                                            Width="200"
                                            Name="lbl_builddefintionname"
-                                           Content="Build Definition :"></Label>
-                                   
+                                           Content="Build Definition :"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Label Grid.Row="2"
                                            Grid.Column="0"
                                            Width="200"
                                            Name="lbl_builddropfolder"
-                                           Content="Build Drop Folder :"></Label>
+                                           Content="Build Drop Folder :"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Label Grid.Row="2"
                                            Grid.Column="1"
                                            Width="299"
                                            Name="ct_builddropfolder"
-                                           Content="{Binding Path=DefaultDropLocation}"></Label>
+                                           Content="{Binding Path=DefaultDropLocation}"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Label Grid.Row="3"
                                            Grid.Column="0"
                                            Width="Auto"
                                            Name="lbl_processtemplate"
-                                           Content="Process Template :"></Label>
+                                           Content="Process Template :"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Label Grid.Row="3"
                                            Grid.Column="1"
                                            Width="Auto"
@@ -184,7 +182,8 @@
                                            Height="31"
                                            VerticalAlignment="Top"
                                            Cursor="IBeam"
-                                           Focusable="True"></Label>
+                                           Focusable="True"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 </Grid>
                             </StackPanel>
                             <!--Used to enumerate build details based upon some parameter-->
@@ -201,11 +200,7 @@
                             Height="Auto"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top">
-                    <Border Background="LightBlue"
-                            BorderBrush="Black"
-                            BorderThickness="2"
-                            CornerRadius="10"
-                            Padding="25">
+                    <Border Style="{StaticResource DefaultBorderStyle}">
                         <StackPanel>
                             <!---Shows last 10 builds based upon build spec-->
                             <StackPanel  Width="Auto"
@@ -238,63 +233,81 @@
                                         <ColumnDefinition Width="152"></ColumnDefinition>
                                         <ColumnDefinition Width="200"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="BuildNumber : "
-                                               Grid.Row="0"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock  Text="{Binding BuildNumber}"
-                                                Grid.Row="0"
-                                                Grid.Column="1"></TextBlock>
-                                    <TextBlock Text="Build Finished : "
-                                               Grid.Row="1"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock Text="{Binding BuildFinished}"
-                                               Grid.Row="1"
-                                               Grid.Column="1"></TextBlock>
-                                    <TextBlock Text="DropLocation : "
-                                               Grid.Row="2"
-                                               Grid.Column="0"></TextBlock>
+                                    <Label Content="BuildNumber : "
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+
+                                    <Label Content="{Binding BuildNumber}"
+                                           Grid.Row="0"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="Build Finished : "
+                                           Grid.Row="1"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="{Binding BuildFinished}"
+                                           Grid.Row="1"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="DropLocation : "
+                                           Grid.Row="2"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Button  Content="Open Drop Location"
                                              Grid.Row="2"
+                                             Style="{StaticResource DefaultButtonStyle}"
                                              Grid.Column="1"
                                              Click="btn_droplocation_Click"
                                              Tag="{Binding DropLocation}"></Button>
                                     <Button  Content="View Files"
                                              Grid.Row="8"
+                                             Style="{StaticResource DefaultButtonStyle}"
                                              Grid.Column="1"
                                              Click="btn_viewfiles_Click"
                                              Tag="{Binding DropLocation}"></Button>
-                                    <TextBlock Text="Status : "
-                                               Grid.Row="3"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock Text="{Binding Status}"
-                                               Grid.Row="3"
-                                               Grid.Column="1"></TextBlock>
-                                    <TextBlock Text="RequestedBy : "
-                                               Grid.Row="4"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock Text="{Binding RequestedBy}"
-                                               Grid.Row="4"
-                                               Grid.Column="1"></TextBlock>
-                                    <TextBlock Text="CompilationStatus : "
-                                               Grid.Row="5"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock Text="{Binding CompilationStatus}"
-                                               Grid.Row="5"
-                                               Grid.Column="1"></TextBlock>
-                                    <TextBlock Text="LogLocation : "
-                                               Grid.Row="6"
-                                               Grid.Column="0"></TextBlock>
+                                    <Label Content="Status : "
+                                           Grid.Row="3"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="{Binding Status}"
+                                           Grid.Row="3"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="RequestedBy : "
+                                           Grid.Row="4"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="{Binding RequestedBy}"
+                                           Grid.Row="4"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="CompilationStatus : "
+                                           Grid.Row="5"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="{Binding CompilationStatus}"
+                                           Grid.Row="5"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="LogLocation : "
+                                           Grid.Row="6"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                     <Button  Content="Open Logs"
                                              Grid.Row="6"
+                                             Style="{StaticResource DefaultButtonStyle}"
                                              Grid.Column="1"
                                              Click="btn_droplocation_Click"
                                              Tag="{Binding LogLocation}"></Button>
-                                    <TextBlock Text="FinishTime : "
-                                               Grid.Row="7"
-                                               Grid.Column="0"></TextBlock>
-                                    <TextBlock Text="{Binding ElapsedTimeSinceBuildFinished,StringFormat={}{0:dd\\.hh\\:mm\\:ss}}"
-                                               Grid.Row="7"
-                                               Grid.Column="1"></TextBlock>
+                                    <Label Content="FinishTime : "
+                                           Grid.Row="7"
+                                           Grid.Column="0"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                                    <Label Content="{Binding ElapsedTimeSinceBuildFinished,StringFormat={}{0:dd\\.hh\\:mm\\:ss}}"
+                                           Grid.Row="7"
+                                           Grid.Column="1"
+                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 </Grid>
                             </StackPanel>
                             <!--Shows you all the deployed files when there is a selected build detail object-->
