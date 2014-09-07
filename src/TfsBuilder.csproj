@@ -194,8 +194,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\EnumToStringConverter.cs" />
+    <Compile Include="UserControls\BuildDefinitionView.xaml.cs">
+      <DependentUpon>BuildDefinitionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BuildDetailsView.xaml.cs">
+      <DependentUpon>BuildDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ProcessParameters.xaml.cs">
       <DependentUpon>ProcessParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TfsDefaultsView.xaml.cs">
+      <DependentUpon>TfsDefaultsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BuildDefinitionViewModel.cs" />
     <Compile Include="ViewModels\BuildDetailViewModel.cs" />
@@ -220,7 +229,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\BuildDefinitionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\BuildDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ProcessParameters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TfsDefaultsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

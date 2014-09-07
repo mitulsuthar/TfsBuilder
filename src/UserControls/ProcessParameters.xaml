@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Styles.xaml" />
+                <ResourceDictionary Source="/Tfsbuilder;component/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -26,44 +26,33 @@
                     <ColumnDefinition Width="200"></ColumnDefinition>
                     <ColumnDefinition Width="299"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Content="ProjectsToBuild"
-                           Grid.Row="0"
-                           Grid.Column="0"
-                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                <ListView ItemsSource="{Binding ProjectsToBuild}"
+                <DataGrid ItemsSource="{Binding ProjectsToBuild}"
                           Grid.Row="0"
-                          Grid.Column="1">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"></TextBlock>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Label Content="PlatformConfigurations"
-                           Grid.Row="1"
-                           Grid.Column="0"
-                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                <ListView ItemsSource="{Binding PlatformConfigurations}"
+                          Grid.Column="1"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="ProjectsToBuild" 
+                                            Header="ProjectToBuild"
+                                            Width="*"
+                                            Binding="{Binding Mode=OneWay}"></DataGridTextColumn>
+                    </DataGrid.Columns>                    
+                </DataGrid>
+                 <DataGrid ItemsSource="{Binding PlatformConfigurations}"
                           Grid.Row="1"
-                          Grid.Column="1">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"></TextBlock>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <Label Content="Process Parameters"
-                           Grid.Row="2"
-                           Grid.Column="0"
-                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                          Grid.Column="1"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="Configurations"
+                                            Header="Configurations"
+                                            Width="*"
+                                            Binding="{Binding Mode=OneWay}">                            
+                        </DataGridTextColumn>                        
+                    </DataGrid.Columns>
+                </DataGrid>
                 <DataGrid ItemsSource="{Binding ProcParameters}"
                           Grid.Row="2"
                           Grid.Column="1">
                 </DataGrid>
-                <Label Content="TestSpecList"
-                           Grid.Row="3"
-                           Grid.Column="0"
-                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>                           
                 <DataGrid ItemsSource="{Binding TestSpecList}"
                           Grid.Row="3"
                           Grid.Column="1">

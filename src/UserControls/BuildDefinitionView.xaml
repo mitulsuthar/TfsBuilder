@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="TfsBuilder.UserControls.BuildDefinitionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:TfsBuilder.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Tfsbuilder;component/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    Width="600"
+                    Height="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+            <Border Style="{StaticResource DefaultBorderStyle}">
+                <StackPanel>
+                    <Button Grid.Row="9"
+                            Grid.Column="1"
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Name="btn_QueueNewBuild"
+                            Content="Queue"
+                            Padding="5,5,5,5"
+                            ClipToBounds="False"
+                            UseLayoutRounding="True"
+                            Command="{Binding Path=QueueBuildCommand}"></Button>
+                    <!---Shows you information about the SelectedBuildDefinition-->
+                    <StackPanel   DataContext="{Binding Path=SelectedBuildDefinition}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="299"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Width="200"
+                                   Name="lbl_builddefintionname"
+                                   Content="Build Definition :"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Name="ct_builddefintionname"
+                                   Content="{Binding Path=Name}"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Width="200"
+                                   Name="lbl_builddropfolder"
+                                   Content="Build Drop Folder :"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Grid.Row="2"
+                                   Grid.Column="1"
+                                   Width="299"
+                                   Name="ct_builddropfolder"
+                                   Content="{Binding Path=DefaultDropLocation}"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Grid.Row="3"
+                                   Grid.Column="0"
+                                   Width="Auto"
+                                   Name="lbl_processtemplate"
+                                   Content="Process Template :"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Grid.Row="3"
+                                   Grid.Column="1"
+                                   Width="Auto"
+                                   Name="ct_processtemplate"
+                                   ClipToBounds="True"
+                                   Content="{Binding Path=ProcessTemplate}"
+                                   HorizontalAlignment="Left"
+                                   Height="31"
+                                   VerticalAlignment="Top"
+                                   Cursor="IBeam"
+                                   Focusable="True"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                        </Grid>
+                    </StackPanel>
+                    <!--Used to enumerate build details based upon some parameter-->
+                    <StackPanel>
+                        <uc:ProcessParameters x:Name="bdprocessparams"
+                                              DataContext="{Binding Path=BuildProcessParameters}"></uc:ProcessParameters>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

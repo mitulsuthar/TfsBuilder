@@ -7,24 +7,22 @@
         xmlns:uc="clr-namespace:TfsBuilder.UserControls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        Title="TFS Manager"
+        Title="TFS Builder"
         Height="800"
         Width="1000"
         Loaded="Window_Loaded"
         WindowState="Maximized"
         mc:Ignorable="d">
-    <Window.Resources>
-        <!--<vm:BuildViewModel x:Key="buildvm" />-->
+    <Window.Resources>        
         <ResourceDictionary>
-            <cnv:EnumToStringConverter x:Key="etsconverter" />
-            <ResourceDictionary.MergedDictionaries>
+            <cnv:EnumToStringConverter x:Key="etsconverter" />           
+            <ResourceDictionary.MergedDictionaries>              
                 <ResourceDictionary Source="/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
-    <ScrollViewer>
-        <!--<StackPanel  DataContext="{Binding Source={StaticResource ResourceKey=buildvm}}">-->
+    <ScrollViewer>        
         <StackPanel d:DataContext="{d:DesignInstance vm:BuildViewModel, IsDesignTimeCreatable=True}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -37,185 +35,47 @@
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                     <ColumnDefinition Width="auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Row="0"
-                            Grid.Column="0"
-                            Width="600"
-                            Height="Auto"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top">
-                    <Border Style="{StaticResource DefaultBorderStyle}">
-                        <StackPanel>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200"></ColumnDefinition>
-                                    <ColumnDefinition Width="299"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Name="lbl_teamserver"
-                                       Content="Tfs Server(s) :"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                <ComboBox Grid.Row="0"
-                                          Grid.Column="1"
-                                          Width="299"
-                                          Name="comboBox_tfsservers"
-                                          ItemsSource="{Binding Path=TfsServerList}"
-                                          SelectedItem="{Binding Path=SelectedTfsServer}">
-                                </ComboBox>
-                                <Label Grid.Row="1"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Name="lbl_teamprojectcollection"
-                                       Content="Team Project Collection :"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                <ComboBox Grid.Row="1"
-                                          Grid.Column="1"
-                                          Width="299"
-                                          Name="comboBox_teamprojectcollection"
-                                          ItemsSource="{Binding Path=TfsTeamProjectCollectionList}"
-                                          DisplayMemberPath="Name"
-                                          SelectedValuePath="Id"
-                                          SelectedItem="{Binding Path=SelectedTeamProjectCollection}">
-                                </ComboBox>
-                                <Label Grid.Row="2"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Name="lbl_teamprojects"
-                                       Content="Team Project :"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                <ComboBox Grid.Row="2"
-                                          Grid.Column="1"
-                                          Width="299"
-                                          Name="comboBox_TeamProjects"
-                                          ItemsSource="{Binding Path=ProjectList}"
-                                          DisplayMemberPath="Name"
-                                          SelectedValuePath="Id"
-                                          SelectedItem="{Binding Path=SelectedProject, Mode=TwoWay}"
-                                          IsSynchronizedWithCurrentItem="True">
-                                </ComboBox>
-                                <Label Grid.Row="3"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Name="lbl_builddefintions"
-                                       Content="Build Definitions :"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                <ListBox Grid.Row="3"
-                                         Grid.Column="1"
-                                         Width="299"
-                                         Height="100"
-                                         Name="listbox_builddefinitions"
-                                         HorizontalAlignment="Left"
-                                         ItemsSource="{Binding Path=BuildDefinitionList}"
-                                         DisplayMemberPath="Name"
-                                         SelectedValuePath="Id"
-                                         SelectedItem="{Binding Path=SelectedBuildDefinition, Mode=TwoWay}"
-                                         IsSynchronizedWithCurrentItem="True">
-                                </ListBox>
-                                <Label Grid.Row="4"
-                                       Grid.Column="1"
-                                       Name="ct_builddefintionname"
-                                       Content="{Binding Path=Name}"
-                                       Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                <Button Grid.Row="4"
-                                        Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"
-                                        Name="btn_QueueNewBuild"
-                                        Content="Queue"
-                                        Padding="5,5,5,5"
-                                        ClipToBounds="False"
-                                        UseLayoutRounding="True"
-                                        Command="{Binding Path=QueueBuildCommand}"></Button>
-                            </Grid>
-                            <!---Shows you information about the SelectedBuildDefinition-->
-                            <StackPanel   DataContext="{Binding Path=SelectedBuildDefinition}">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="200"></ColumnDefinition>
-                                        <ColumnDefinition Width="299"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Row="0"
-                                           Grid.Column="0"
-                                           Width="200"
-                                           Name="lbl_builddefintionname"
-                                           Content="Build Definition :"
-                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                    <Label Grid.Row="2"
-                                           Grid.Column="0"
-                                           Width="200"
-                                           Name="lbl_builddropfolder"
-                                           Content="Build Drop Folder :"
-                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                    <Label Grid.Row="2"
-                                           Grid.Column="1"
-                                           Width="299"
-                                           Name="ct_builddropfolder"
-                                           Content="{Binding Path=DefaultDropLocation}"
-                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                    <Label Grid.Row="3"
-                                           Grid.Column="0"
-                                           Width="Auto"
-                                           Name="lbl_processtemplate"
-                                           Content="Process Template :"
-                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                    <Label Grid.Row="3"
-                                           Grid.Column="1"
-                                           Width="Auto"
-                                           Name="ct_processtemplate"
-                                           ClipToBounds="True"
-                                           Content="{Binding Path=ProcessTemplate}"
-                                           HorizontalAlignment="Left"
-                                           Height="31"
-                                           VerticalAlignment="Top"
-                                           Cursor="IBeam"
-                                           Focusable="True"
-                                           Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
-                                </Grid>
-                            </StackPanel>
-                            <!--Used to enumerate build details based upon some parameter-->
-                            <StackPanel>
-                                <uc:ProcessParameters x:Name="bdprocessparams"
-                                                      DataContext="{Binding Path=BuildProcessParameters}"></uc:ProcessParameters>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-                <StackPanel Grid.Row="0"
-                            Grid.Column="1"
+                <uc:TfsDefaultsView Grid.Row="0"
+                                    Grid.Column="0"></uc:TfsDefaultsView>
+                <uc:BuildDefinitionView Grid.Row="0"
+                                        Grid.Column="1"></uc:BuildDefinitionView>
+                <uc:BuildDetailsView Grid.Row="0"
+                                     Grid.Column="2"></uc:BuildDetailsView>
+                <!--<StackPanel Grid.Row="0"
+                            Grid.Column="2"
                             Width="450"
                             Height="Auto"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top">
                     <Border Style="{StaticResource DefaultBorderStyle}">
                         <StackPanel>
-                            <!---Shows last 10 builds based upon build spec-->
+                            --><!---Shows last 10 builds based upon build spec--><!--
                             <StackPanel  Width="Auto"
                                          Orientation="Vertical">
                                 <DataGrid Name="dtgrid_viewbuildqueue"
-                                          Width="Auto"
+                                          AutoGenerateColumns="False"
+                                          Width="Auto"                                          
                                           ItemsSource="{Binding Path=BuildDetailList}"
                                           DisplayMemberPath="BuildNumber"
                                           SelectedValuePath="BuildNumber"
                                           SelectedItem="{Binding Path=SelectedBuildDetail, Mode=TwoWay}"
                                           IsSynchronizedWithCurrentItem="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn x:Name="BuildNumber" 
+                                                                Binding="{Binding BuildNumber}"
+                                                                Header="BuildNumber" />                                        
+                                        <DataGridTextColumn x:Name="RequestedBy"
+                                                            Binding="{Binding RequestedBy}"
+                                                            Header="RequestedBy" />
+                                        <DataGridTextColumn x:Name="Reason"
+                                                            Binding="{Binding Reason}"
+                                                            Header="RequestedBy"
+                                                            Width="*"/>
+                                    </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
                             <TextBlock>Build Detail</TextBlock>
-                            <!---Shows you details about the selected build-->
+                            --><!---Shows you details about the selected build--><!--
                             <StackPanel DataContext="{Binding Path=SelectedBuildDetail}">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -310,7 +170,7 @@
                                            Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
                                 </Grid>
                             </StackPanel>
-                            <!--Shows you all the deployed files when there is a selected build detail object-->
+                            --><!--Shows you all the deployed files when there is a selected build detail object--><!--
                             <StackPanel>
                                 <ListBox Name="listview_viewdropfiles"
                                          Width="Auto"
@@ -343,13 +203,7 @@
                             </StackPanel>
                         </StackPanel>
                     </Border>
-                </StackPanel>
-                <StackPanel Grid.Row="1"
-                            Grid.Column="0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom">
-                    <TreeView Name="treeView"></TreeView>
-                </StackPanel>
+                </StackPanel>-->
             </Grid>
         </StackPanel>
     </ScrollViewer>

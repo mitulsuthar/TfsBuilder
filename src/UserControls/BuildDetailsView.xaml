@@ -1,0 +1,174 @@
+﻿<UserControl x:Class="TfsBuilder.UserControls.BuildDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Tfsbuilder;component/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    Width="450"
+                    Height="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+            <Border Style="{StaticResource DefaultBorderStyle}">
+                <StackPanel>
+                    <!---Shows last 10 builds based upon build spec-->
+                    <StackPanel  Width="Auto"
+                                 Orientation="Vertical">
+                        <DataGrid Name="dtgrid_viewbuildqueue"
+                                  AutoGenerateColumns="False"
+                                  Width="Auto"
+                                  ItemsSource="{Binding Path=BuildDetailList}"
+                                  DisplayMemberPath="BuildNumber"
+                                  SelectedValuePath="BuildNumber"
+                                  SelectedItem="{Binding Path=SelectedBuildDetail, Mode=TwoWay}"
+                                  IsSynchronizedWithCurrentItem="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="BuildNumber"
+                                                    Binding="{Binding BuildNumber}"
+                                                    Header="BuildNumber" />
+                                <DataGridTextColumn x:Name="RequestedBy"
+                                                    Binding="{Binding RequestedBy}"
+                                                    Header="RequestedBy" />
+                                <DataGridTextColumn x:Name="Reason"
+                                                    Binding="{Binding Reason}"
+                                                    Header="RequestedBy"
+                                                    Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                    <TextBlock>Build Detail</TextBlock>
+                    <!---Shows you details about the selected build-->
+                    <StackPanel DataContext="{Binding Path=SelectedBuildDetail}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="152"></ColumnDefinition>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="BuildNumber : "
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+
+                            <Label Content="{Binding BuildNumber}"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="Build Finished : "
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="{Binding BuildFinished}"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="DropLocation : "
+                                   Grid.Row="2"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Button  Content="Open Drop Location"
+                                     Grid.Row="2"
+                                     Style="{StaticResource DefaultButtonStyle}"
+                                     Grid.Column="1"
+                                     Click="btn_droplocation_Click"
+                                     Tag="{Binding DropLocation}"></Button>                           
+                            <Label Content="Status : "
+                                   Grid.Row="3"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="{Binding Status}"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="RequestedBy : "
+                                   Grid.Row="4"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="{Binding RequestedBy}"
+                                   Grid.Row="4"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="CompilationStatus : "
+                                   Grid.Row="5"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="{Binding CompilationStatus}"
+                                   Grid.Row="5"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="LogLocation : "
+                                   Grid.Row="6"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Button  Content="Open Logs"
+                                     Grid.Row="6"
+                                     Style="{StaticResource DefaultButtonStyle}"
+                                     Grid.Column="1"
+                                     Click="btn_droplocation_Click"
+                                     Tag="{Binding LogLocation}"></Button>
+                            <Label Content="FinishTime : "
+                                   Grid.Row="7"
+                                   Grid.Column="0"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                            <Label Content="{Binding ElapsedTimeSinceBuildFinished,StringFormat={}{0:dd\\.hh\\:mm\\:ss}}"
+                                   Grid.Row="7"
+                                   Grid.Column="1"
+                                   Style="{Binding Mode=OneWay, Source={StaticResource LabelStyle}}"></Label>
+                        </Grid>
+                    </StackPanel>
+                    <!--Shows you all the deployed files when there is a selected build detail object-->
+                    <StackPanel>
+                        <ListBox Name="listview_viewdropfiles"
+                                 Width="Auto"
+                                 ItemsSource="{Binding DeployedFilesList}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Deploy" />
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"></ColumnDefinition>
+                                            <ColumnDefinition Width="500"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="File Name"
+                                                   Grid.Row="0"
+                                                   Grid.Column="0"></TextBlock>
+                                        <TextBlock  Text="{Binding FileName}"
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"></TextBlock>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

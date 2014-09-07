@@ -170,123 +170,118 @@ namespace TfsBuilder
             return task1;
         }
 
-        private void btn_QueueNewBuild_Click(object sender, RoutedEventArgs e)
-        {
-            var xs = listbox_builddefinitions.SelectedItem.ToString();
+        //private void btn_QueueNewBuild_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var xs = listbox_builddefinitions.SelectedItem.ToString();
          
-            IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
+        //    IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
 
-            IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
-            IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
-            buildDetailSpec.MaxBuildsPerDefinition = 1;
-            buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
+        //    IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
+        //    IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
+        //    buildDetailSpec.MaxBuildsPerDefinition = 1;
+        //    buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
          
-            IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
-            if (results.Failures.Length == 0 && results.Builds.Length == 1)
-            {
-                IBuildDetail buildDetail = results.Builds[0];
-                IBuildDefinition buildDefinition = buildDetail.BuildDefinition;                
-                IBuildRequest bdrequest;
-                bdrequest = buildDefinition.CreateBuildRequest();                
-                buildserver.QueueBuild(bdrequest);
-                view_buildqueue();
-            }
+        //    IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
+        //    if (results.Failures.Length == 0 && results.Builds.Length == 1)
+        //    {
+        //        IBuildDetail buildDetail = results.Builds[0];
+        //        IBuildDefinition buildDefinition = buildDetail.BuildDefinition;                
+        //        IBuildRequest bdrequest;
+        //        bdrequest = buildDefinition.CreateBuildRequest();                
+        //        buildserver.QueueBuild(bdrequest);
+        //        view_buildqueue();
+        //    }
             
-        }
-        private void view_buildqueue()
-        {
-            //Get SelectedItem from List of Build Definitions
-            var xs = listbox_builddefinitions.SelectedItem.ToString();
-            IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
+        //}
+        //private void view_buildqueue()
+        //{
+        //    //Get SelectedItem from List of Build Definitions
+        //    var xs = listbox_builddefinitions.SelectedItem.ToString();
+        //    IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
 
-            IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
+        //    IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
             
-            IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
+        //    IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
             
-            buildDetailSpec.MaxBuildsPerDefinition = 1;
+        //    buildDetailSpec.MaxBuildsPerDefinition = 1;
             
-            buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
+        //    buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
 
-            IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
-            if (results.Failures.Length == 0 && results.Builds.Length == 1)
-            {
-                IBuildDetail buildDetail = results.Builds[0];
-                IBuildDefinition buildDefinition = buildDetail.BuildDefinition;
-                IQueuedBuildsView queuedBuildsView = buildserver.CreateQueuedBuildsView(comboBox_TeamProjects.SelectedItem.ToString());
-                queuedBuildsView.StatusFilter = QueueStatus.Completed;
-               // queuedBuildsView.QueryOptions = QueryOptions.Definitions;
-                queuedBuildsView.Refresh(true);
-                foreach (IQueuedBuild queuedBuild in queuedBuildsView.QueuedBuilds)
-                {
-                    //MessageBox.Show(queuedBuild.Status.ToString());
-                }               
-            }
-        }
+        //    IBuildQueryResult results = buildserver.QueryBuilds(buildDetailSpec);
+        //    if (results.Failures.Length == 0 && results.Builds.Length == 1)
+        //    {
+        //        IBuildDetail buildDetail = results.Builds[0];
+        //        IBuildDefinition buildDefinition = buildDetail.BuildDefinition;
+        //        IQueuedBuildsView queuedBuildsView = buildserver.CreateQueuedBuildsView(comboBox_TeamProjects.SelectedItem.ToString());
+        //        queuedBuildsView.StatusFilter = QueueStatus.Completed;
+        //       // queuedBuildsView.QueryOptions = QueryOptions.Definitions;
+        //        queuedBuildsView.Refresh(true);
+        //        foreach (IQueuedBuild queuedBuild in queuedBuildsView.QueuedBuilds)
+        //        {
+        //            //MessageBox.Show(queuedBuild.Status.ToString());
+        //        }               
+        //    }
+        //}
 
-        private async void dtgrid_viewbuildqueue_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dtgrid_viewbuildqueue.SelectedIndex != -1) {
+        //private async void dtgrid_viewbuildqueue_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (dtgrid_viewbuildqueue.SelectedIndex != -1) {
 
-                var xs = listbox_builddefinitions.SelectedItem.ToString();
-                IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
+        //        var xs = listbox_builddefinitions.SelectedItem.ToString();
+        //        IBuildServiceHost[] buildServiceHosts = buildserver.QueryBuildServiceHosts("*");
 
-                IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
+        //        IBuildDefinition[] buildDefinitions = buildserver.QueryBuildDefinitions(comboBox_TeamProjects.SelectedItem.ToString());
 
-                IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
-                buildDetailSpec.MaxBuildsPerDefinition = 10;
-                buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
-                try
-                {
-                    if (dtgrid_viewbuildqueue.IsLoaded)
-                    {
-                        dynamic g = dtgrid_viewbuildqueue.SelectedValue;
+        //        IBuildDetailSpec buildDetailSpec = buildserver.CreateBuildDetailSpec(comboBox_TeamProjects.SelectedItem.ToString(), xs);
+        //        buildDetailSpec.MaxBuildsPerDefinition = 10;
+        //        buildDetailSpec.QueryOrder = BuildQueryOrder.FinishTimeDescending;
+        //        try
+        //        {
+        //            if (dtgrid_viewbuildqueue.IsLoaded)
+        //            {
+        //                dynamic g = dtgrid_viewbuildqueue.SelectedValue;
                         
-                        Task<IBuildDetail[]> getAllBuildsTask = getBuildsAsync(buildDetailSpec);
+        //                Task<IBuildDetail[]> getAllBuildsTask = getBuildsAsync(buildDetailSpec);
 
-                        IBuildDetail[] builds = await getAllBuildsTask;
+        //                IBuildDetail[] builds = await getAllBuildsTask;
                         
-                        var mybuild = from bd in builds
-                                          where bd.BuildNumber.ToString() == g.BuildNumber.ToString()
-                                          select new
-                                          {
-                                              bd.BuildNumber,
-                                              DefinitionName = bd.BuildDefinition.Name,
-                                              bd.BuildFinished,
-                                              bd.CompilationStatus,
-                                              bd.DropLocation,
-                                              bd.LogLocation,
-                                              bd.DropLocationRoot,
-                                              bd.StartTime,
-                                              bd.Status,
-                                              bd.TeamProject,
-                                              bd.TestStatus,
-                                              bd.RequestedBy,
-                                              bd.Quality,
-                                              bd.ProcessParameters
-                                          };
-                      //  listview_viewbuilddetail.ItemsSource = mybuild.ToArray();
-                        //dtgrid_viewBuildDetail.ItemsSource = builds.Select(x => x.BuildNumber == g.BuildNumber);                    
+        //                var mybuild = from bd in builds
+        //                                  where bd.BuildNumber.ToString() == g.BuildNumber.ToString()
+        //                                  select new
+        //                                  {
+        //                                      bd.BuildNumber,
+        //                                      DefinitionName = bd.BuildDefinition.Name,
+        //                                      bd.BuildFinished,
+        //                                      bd.CompilationStatus,
+        //                                      bd.DropLocation,
+        //                                      bd.LogLocation,
+        //                                      bd.DropLocationRoot,
+        //                                      bd.StartTime,
+        //                                      bd.Status,
+        //                                      bd.TeamProject,
+        //                                      bd.TestStatus,
+        //                                      bd.RequestedBy,
+        //                                      bd.Quality,
+        //                                      bd.ProcessParameters
+        //                                  };
+        //              //  listview_viewbuilddetail.ItemsSource = mybuild.ToArray();
+        //                //dtgrid_viewBuildDetail.ItemsSource = builds.Select(x => x.BuildNumber == g.BuildNumber);                    
 
-                    }
-                }
-                catch (Exception)
-                {
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
         //async Task<IBuildDetail[]> GetBuildsAsync(IBuildDetailSpec buildDetailSpec)
         //{
           
         //    IBuildDetail[] myBuilds = buildserver.QueryBuilds(buildDetailSpec).Builds;
         //    return m_builds;
         //}
-        private void btn_droplocation_Click(object sender, RoutedEventArgs e)
-        {
-            var myvalue = ((Button)sender).Tag;
-            System.Diagnostics.Process.Start(myvalue.ToString());
-            
-        }
+        
         List<String> bdfiles = new List<String>();
         string[] fileExtensions = {".exe",".zip"};
        
@@ -312,15 +307,15 @@ namespace TfsBuilder
             }
         }
 
-        private void btn_viewfiles_Click(object sender, RoutedEventArgs e)
-        {
-            var myvalue = ((Button)sender).Tag;
-            DirSearch(myvalue.ToString());
-            var query = from file in bdfiles
-                        select new { file = file };
-            listview_viewdropfiles.ItemsSource = query;
-            bdfiles.Clear();
-        }
+        //private void btn_viewfiles_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var myvalue = ((Button)sender).Tag;
+        //    DirSearch(myvalue.ToString());
+        //    var query = from file in bdfiles
+        //                select new { file = file };
+        //    listview_viewdropfiles.ItemsSource = query;
+        //    bdfiles.Clear();
+        //}
         //#region TreeView Control
         //void TreeView_Loaded(object sender, RoutedEventArgs e)
         //{

@@ -22,10 +22,20 @@ namespace TfsBuilder.ViewModels
             RequestedFor = bd.RequestedFor;
             CompilationStatus = bd.CompilationStatus;
             FinishTime = bd.FinishTime;
+            Reason = bd.Reason.ToString();
             Status = bd.Status;
             this.originalValue = (BuildDetailViewModel)this.MemberwiseClone();
         }
-       
+        private string reason;
+
+        public string Reason
+        {
+            get { return reason; }
+            set { reason = value;
+            OnPropertyChanged("Reason");
+            }
+        }
+        
         private bool buildfinished;
 
         public bool BuildFinished
